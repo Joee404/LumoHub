@@ -150,3 +150,10 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'ROTATE_REFRESH_TOKENS': True,
 }
+
+from decouple import config
+
+TMDB_API_KEY = config('API_KEY')
+TMDB_READ_ACCESS_TOKEN = config('ACCESS_TOKEN')
+GEMINI_API_KEY=config('GEMINI_API_KEY')
+GEMINI_API_URL=config('GEMINI_API_URL')

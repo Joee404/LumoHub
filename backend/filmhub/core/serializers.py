@@ -30,7 +30,6 @@ class LoginSerializer(TokenObtainPairSerializer):
 
         user = authenticate(username=username_or_email, password=password)
 
-        # If login with email failed, try to find user by email and use username
         if user is None:
             try:
                 user_obj = User.objects.get(email=username_or_email)
@@ -45,3 +44,31 @@ class LoginSerializer(TokenObtainPairSerializer):
         data["username"] = user.username
         data["email"] = user.email
         return data
+    
+from rest_framework import serializers
+from .models import Watchlist, Favorite, WatchedHistory, UserPreference, Recommendation
+
+class WatchlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Watchlist
+        fields = '__all__'
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+class WatchedHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WatchedHistory
+        fields = '__all__'
+
+class UserPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPreference
+        fields = '__all__'
+
+class RecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendation
+        fields = '__all__'
