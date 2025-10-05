@@ -5,7 +5,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
-    path('movies/popular/', MoviesWithDetailsView.as_view(), name='popular-movies'),
+    path('movies/', MoviesWithDetailsView.as_view(), name='movies'),
     path('movies/search/<int:movie_id>/', get_movie_by_id, name='search-movies'),
 
     path('watchlist/', add_to_watchlist, name='add-watchlist'),

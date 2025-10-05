@@ -334,47 +334,47 @@ def get_movie_by_id(request, movie_id):
 
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def get_gemini_recommendations(request):
-#     user = request.user
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_gemini_recommendations(request):
+    user = request.user
     
-#     liked_movies = list(Favorite.objects.filter(user=user).values_list('movie_id', flat=True))
-#     disliked_movies = list(UserPreference.objects.filter(user=user, disliked=True).values_list('movie_id', flat=True))
-#     watchlist_movies = list(Watchlist.objects.filter(user=user).values_list('movie_id', flat=True))
+    liked_movies = list(Favorite.objects.filter(user=user).values_list('movie_id', flat=True))
+    disliked_movies = list(UserPreference.objects.filter(user=user, disliked=True).values_list('movie_id', flat=True))
+    watchlist_movies = list(Watchlist.objects.filter(user=user).values_list('movie_id', flat=True))
     
-#     prompt = f"""
-#     User likes these movies: {liked_movies}
-#     User dislikes these movies: {disliked_movies}
-#     User watchlist: {watchlist_movies}
+    prompt = f"""
+    User likes these movies: {liked_movies}
+    User dislikes these movies: {disliked_movies}
+    User watchlist: {watchlist_movies}
     
-#     Suggest 5 movies this user will likely enjoy.
-#     """
+    Suggest 5 movies this user will likely enjoy.
+    """
     
-#     headers = {
-#         "Authorization": f"Bearer {settings.GEMINI_API_KEY}",
-#         "Content-Type": "application/json"
-#     }
+    headers = {
+        "Authorization": f"Bearer {settings.GEMINI_API_KEY}",
+        "Content-Type": "application/json"
+    }
     
-#     response = requests.post(
-#         settings.GEMINI_API_URL,
-#         json={"prompt": prompt, "max_results": 5},
-#         headers=headers
-#     )
+    response = requests.post(
+        settings.GEMINI_API_URL,
+        json={"prompt": prompt, "max_results": 5},
+        headers=headers
+    )
     
-#     if response.status_code != 200:
-#         return Response({"error": "Gemini API request failed"}, status=response.status_code)
+    if response.status_code != 200:
+        return Response({"error": "Gemini API request failed"}, status=response.status_code)
     
-#     recommendations = response.json().get("recommendations", [])
+    recommendations = response.json().get("recommendations", [])
     
-#     # Save & serialize
-#     saved_recommendations = []
-#     for movie_id in recommendations:
-#         rec, created = Recommendation.objects.get_or_create(user=user, movie_id=movie_id)
-#         saved_recommendations.append(rec)
+    # Save & serialize
+    saved_recommendations = []
+    for movie_id in recommendations:
+        rec, created = Recommendation.objects.get_or_create(user=user, movie_id=movie_id)
+        saved_recommendations.append(rec)
 
-#     serializer = RecommendationSerializer(saved_recommendations, many=True)
-#     return Response(serializer.data)
+    serializer = RecommendationSerializer(saved_recommendations, many=True)
+    return Response(serializer.data)
 
 
 
